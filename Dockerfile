@@ -1,23 +1,22 @@
-FROM python:3.9-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY . .
+COPY . /app
 
 RUN apt-get update && apt-get install -y \
-    build-essential \
     curl \
-    software-properties-common \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+    ffmpeg \
+    libsm6 \
+    libxext6
 
-RUN git clone https://github.com/streamlit/streamlit-example.git .
+RUN pip install poetry==1.4.1
 
-RUN pip3 install poetry
-RUN poetry install
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-interaction --no-ansi --without dev
 
-EXPOSE 8501
+EXPOSE 8080
 
-HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
+HEALTHCHECK CMD curl --fail http://localhost:8080/_stcore/health
 
-ENTRYPOINT ["streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.0.0"]
+ENTRYPOINT ["streamlit", "run", "/app/main.py", "--server.port=8501", "--server.address=0.0.0.0"]
