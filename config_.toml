@@ -3,4 +3,4 @@ sslCertFile = '/app/certs/fullchain.pem'
 sslKeyFile = '/app/certs/privkey.pem'
 
 [server]
-port = 80
+port = 8051
