@@ -47,7 +47,7 @@ def signup():
 
             headers = {"Content-Type": "application/json"}
             response = requests.post(
-                "http://5.23.52.136:8001/database/create_bytes",
+                f"{SERVICE_ADDRESS}/database/create_bytes",
                 json=data,
                 headers=headers,
             )
@@ -88,7 +88,7 @@ def login():
             data = {"photo": encoded_image}
             headers = {"Content-Type": "application/json"}
             response = requests.post(
-                "http://5.23.52.136:8001/model/recognize_bytes",
+                f"{SERVICE_ADDRESS}/model/recognize_bytes",
                 json=data,
                 headers=headers,
             )
