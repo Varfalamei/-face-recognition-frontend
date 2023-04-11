@@ -12,10 +12,8 @@ RUN apt-get update && apt-get install -y --fix-missing \
     libsm6 \
     libxext6
 
-RUN pip install poetry==1.4.1
-
-RUN poetry config virtualenvs.create false \
-    && poetry install --no-interaction --no-ansi --without dev
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
 EXPOSE 80
 
