@@ -2,18 +2,12 @@ import base64
 
 import requests
 import streamlit as st
-import ssl
 
 from scheme import PersonInfo
 
 SERVICE_ADDRESS_HOST = "5.23.52.136"
 SERVICE_ADDRESS_PORT = "8000"
 SERVICE_ADDRESS = f"http://{SERVICE_ADDRESS_HOST}:{SERVICE_ADDRESS_PORT}"
-
-
-# Загрузка файлов сертификата и ключа
-sslCertFile = '/app/certs/fullchain.pem'
-sslKeyFile = '/app/certs/privkey.pem'
 
 
 def signup():
@@ -111,12 +105,7 @@ def login():
 
 
 def main():
-    # Создание SSL-контекста
-    ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-    ssl_context.load_cert_chain(certfile=sslCertFile, keyfile=sslKeyFile)
 
-    # Запуск приложения Streamlit с использованием SSL
-    st.server.ssl_context = ssl_context
     st.set_option('server.enableCORS', False)
 
     st.title("Face Recognition Backend")

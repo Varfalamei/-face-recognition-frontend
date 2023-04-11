@@ -1,6 +1,7 @@
 [server]
 sslCertFile = '/app/certs/fullchain.pem'
 sslKeyFile = '/app/certs/privkey.pem'
-
-[server]
+enableCORS = false
 port = 8051
+headless = true
+enableXsrfProtection = true
