@@ -1,6 +1,6 @@
 [server]
-sslCertFile = '/etc/letsencrypt/live/facerecognition.ddns.net/fullchain.pem'
-sslKeyFile = '/etc/letsencrypt/live/facerecognition.ddns.net/privkey.pem'
+sslCertFile = '/app/certs/fullchain.pem'
+sslKeyFile = '/app/certs/privkey.pem'
 
 [server]
 port = 80

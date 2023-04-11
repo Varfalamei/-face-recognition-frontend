@@ -3,5 +3,5 @@
 ## How to set up
 ``` shell
 docker build -t face-recognition-frontend .
-docker run -it -p 8501:8501 face-recognition-frontend
+docker run -itd -p 80:80 -v /etc/letsencrypt/live/facerecognition.ddns.net/:/app/certs/ face-recognition-frontend
 ```
