@@ -105,9 +105,6 @@ def login():
 
 
 def main():
-
-    st.set_option('server.enableCORS', False)
-
     st.title("Face Recognition Backend")
 
     choice = st.sidebar.radio("Выберите вкладку", ["Log In", "Sign Up"])
