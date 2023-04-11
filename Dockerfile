@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.10.6-bullseye
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ RUN pip install poetry==1.4.1
 RUN poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-ansi --without dev
 
-EXPOSE 8080
+EXPOSE 8080, 8501
 
 HEALTHCHECK CMD curl --fail http://localhost:8080/_stcore/health
 
