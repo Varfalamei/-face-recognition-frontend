@@ -10,7 +10,7 @@ class PersonInfo(BaseModel):
 
 
 class SignUpData(BaseModel):
-    photo: bytes
+    photo: str
     info: PersonInfo
 
 

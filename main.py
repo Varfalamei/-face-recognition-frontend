@@ -1,13 +1,12 @@
-import streamlit as st
-import requests
-import cv2
-import numpy as np
 import base64
-from scheme import PersonInfo, SignUpData, LogInData
 
+import requests
+import streamlit as st
+
+from scheme import PersonInfo
 
 SERVICE_ADDRESS_HOST = "5.23.52.136"
-SERVICE_ADDRESS_PORT = "8000"
+SERVICE_ADDRESS_PORT = "8001"
 SERVICE_ADDRESS = f"http://{SERVICE_ADDRESS_HOST}:{SERVICE_ADDRESS_PORT}"
 
 
@@ -30,35 +29,38 @@ def signup():
     if st.button("Sign Up"):
         if image is not None:
             if use_camera:
-                image = image.getvalue()
-            image = cv2.imdecode(np.frombuffer(image, np.uint8), cv2.IMREAD_COLOR)
+                bytes_data = image.getvalue()
+            else:
+                bytes_data = image.read()
+
+            encoded_image = base64.b64encode(bytes_data).decode("utf-8")
 
             info = PersonInfo(
                 name=name,
                 surname=surname,
                 age=age,
                 job_post=job_post,
-                access_level=access_level
+                access_level=access_level,
             )
 
-            signup_data = SignUpData(
-                photo=image,
-                info=info
-            )
+            data = {"photo": encoded_image, "info": info.json()}
 
-            data = signup_data.json()  # Преобразование данных в формат JSON
-            response = requests.post(f"{SERVICE_ADDRESS}/database/create", json=data)
+            headers = {"Content-Type": "application/json"}
+            response = requests.post(
+                "http://127.0.0.1:8001/database/create_bytes",
+                json=data,
+                headers=headers,
+            )
 
             # Обработка ответа от бэкенда
             if response.status_code == 200:
-                st.success("Face recognition successful!")
                 json_data = response.json()
 
                 # Получение значения поля client_id из JSON-ответа
-                client_id = json_data['client_id']
+                message = json_data["message"]
 
                 # Отображение значения client_id в Streamlit
-                st.write("Added client ID:", client_id)
+                st.success(message)
             else:
                 st.error("Face recognition failed. Please try again.")
         else:
@@ -81,15 +83,15 @@ def login():
             else:
                 bytes_data = image.read()
 
-            encoded_image = base64.b64encode(bytes_data).decode('utf-8')
+            encoded_image = base64.b64encode(bytes_data).decode("utf-8")
 
-            login_data = LogInData(
-                photo=encoded_image,
+            data = {"photo": encoded_image}
+            headers = {"Content-Type": "application/json"}
+            response = requests.post(
+                "http://127.0.0.1:8001/model/recognize_bytes",
+                json=data,
+                headers=headers,
             )
-
-            data = login_data.json()
-
-            response = requests.post(f"{SERVICE_ADDRESS}/model/recognize_bytes", json=data)
 
             if response.status_code == 200:
                 st.success("Face recognition successful!")
@@ -113,5 +115,5 @@ def main():
         signup()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
